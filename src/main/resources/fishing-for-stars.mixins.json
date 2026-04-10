@@ -1,0 +1,20 @@
+{
+	"required": true,
+	"package": "net.juyoh.ffs.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"FishingDisableBobMixin",
+		"FishingNotifyMixin",
+		"FishingParticlesMixin",
+		"FishingCatchMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	},
+	"client": [
+
+	]
+}

@@ -1,0 +1,55 @@
+{
+  "fish_notify": {
+    "sounds": [
+      "fishing-for-stars:fish_notify"
+    ],
+    "subtitle": "sound.ffs.fish_notify"
+  },
+  "reel_behind": {
+    "sounds": [
+      "fishing-for-stars:reel_behind"
+    ]
+  },
+  "reel_off": {
+    "sounds": [
+      "fishing-for-stars:reel_off"
+    ]
+  },
+  "fish_escape": {
+    "sounds": [
+      "fishing-for-stars:fish_escape"
+    ]
+  },
+  "fish_start": {
+    "sounds": [
+      "fishing-for-stars:fish_start"
+    ]
+  },
+  "rod_bend": {
+    "sounds": [
+      "fishing-for-stars:rod_bend1",
+      "fishing-for-stars:rod_bend2",
+      "fishing-for-stars:rod_bend3"
+    ]
+  },
+  "fish_catch_squelch": {
+    "sounds": [
+      "fishing-for-stars:fish_catch_squelch"
+    ]
+  },
+  "fish_catch_pull": {
+    "sounds": [
+      "fishing-for-stars:fish_catch_pull"
+    ]
+  },
+  "fish_finish_ding": {
+    "sounds": [
+      "fishing-for-stars:fish_finish_ding"
+    ]
+  },
+  "fish_new_record": {
+    "sounds": [
+      "fishing-for-stars:fish_new_record"
+    ]
+  }
+}
