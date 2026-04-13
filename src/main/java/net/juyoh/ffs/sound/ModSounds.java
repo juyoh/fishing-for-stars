@@ -13,6 +13,9 @@ public class ModSounds {
     public static final SoundEvent FISH_FINISH_DING = registerSoundEvent("fish_finish_ding");
     public static final SoundEvent FISH_BEHIND = registerSoundEvent("reel_behind");
     public static final SoundEvent FISH_OFF = registerSoundEvent("reel_off");
+    public static final SoundEvent TREASURE_OPEN = registerSoundEvent("treasure_open");
+
+    public static final SoundEvent ROD_BEND = registerSoundEvent("rod_bend");
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = Identifier.of(FishingForStars.MOD_ID, name);

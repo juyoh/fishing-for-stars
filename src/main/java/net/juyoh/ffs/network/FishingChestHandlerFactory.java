@@ -24,6 +24,6 @@ public class FishingChestHandlerFactory implements NamedScreenHandlerFactory {
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("text.juyoh.ffs.fish_chest");
+        return Text.translatable("text.ffs.fish_chest");
     }
 }

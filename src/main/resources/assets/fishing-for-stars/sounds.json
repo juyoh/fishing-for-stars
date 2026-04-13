@@ -51,5 +51,10 @@
     "sounds": [
       "fishing-for-stars:fish_new_record"
     ]
+  },
+  "treasure_open": {
+    "sounds": [
+      "fishing-for-stars:treasure_open"
+    ]
   }
 }

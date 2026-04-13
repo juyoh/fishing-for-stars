@@ -51,21 +51,18 @@ public record CaughtFishC2SPayload(boolean caughtChest) implements CustomPayload
     }
 
     public static void apply(CaughtFishC2SPayload packet, ServerPlayNetworking.Context context){
-        FishingForStars.LOGGER.info("recieved caught fish payload, chest: " + packet.caughtChest);
         if (context.player() == null || context.player().fishHook == null) return;
-        FishingForStars.LOGGER.info("player and bobber aren't null");
         ServerPlayerEntity playerEntity = context.player();
         FishingBobberEntity bobber = context.player().fishHook;
         if (FishingForStars.promisedFish.containsKey(playerEntity.getUuid())) {
             //Fly fish towards player
-            playerEntity.getWorld().playSound(playerEntity, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), ModSounds.FISH_CATCH_PULL, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
             ItemStack itemStack = FishingForStars.promisedFish.get(playerEntity.getUuid());
             ItemEntity itemEntity = new ItemEntity(bobber.getWorld(), bobber.getX(), bobber.getY(), bobber.getZ(), itemStack);
             double d = playerEntity.getX() - bobber.getX();
             double e = playerEntity.getY() - bobber.getY();
             double f = playerEntity.getZ() - bobber.getZ();
-            double g = 0.1;
+
             itemEntity.setVelocity(d * 0.1, e * 0.1 + Math.sqrt(Math.sqrt(d * d + e * e + f * f)) * 0.08, f * 0.1);
             bobber.getWorld().spawnEntity(itemEntity);
             playerEntity.getWorld().spawnEntity(new ExperienceOrbEntity(playerEntity.getWorld(), playerEntity.getX(), playerEntity.getY() + (double)0.5F, playerEntity.getZ() + (double)0.5F, bobber.getRandom().nextInt(6) + 1));
@@ -76,6 +73,8 @@ public record CaughtFishC2SPayload(boolean caughtChest) implements CustomPayload
             FishingForStars.promisedFish.remove(context.player().getUuid());
         }
         if (packet.caughtChest) {
+            playerEntity.getWorld().playSound(playerEntity, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), ModSounds.TREASURE_OPEN, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
             SimpleInventory inventory = new SimpleInventory(27);
             LootContextParameterSet lootContextParameterSet = (new LootContextParameterSet.Builder((ServerWorld)playerEntity.getWorld())).add(LootContextParameters.ORIGIN, bobber.getPos()).luck(playerEntity.getLuck()).build(LootContextTypes.CHEST);
             LootTable lootTable = playerEntity.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(FishingForStars.MOD_ID, "chests/fishing_chest")));
@@ -84,5 +83,7 @@ public record CaughtFishC2SPayload(boolean caughtChest) implements CustomPayload
             playerEntity.openHandledScreen(new FishingChestHandlerFactory(inventory));
         }
 
+        context.player().fishHook.discard();
+        context.player().fishHook = null;
     }
 }

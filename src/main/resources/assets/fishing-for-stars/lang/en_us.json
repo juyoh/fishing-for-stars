@@ -1,5 +1,9 @@
 {
   "sound.ffs.fish_notify": "Fish bites",
-  "text.juyoh.ffs.fishing": "Fishing",
-  "text.juyoh.ffs.fish_chest": "Fishing Chest"
+  "text.ffs.fishing": "Fishing",
+  "text.ffs.fish_chest": "Treasure Chest",
+  "item.fishing-for-stars.sonar_bobber": "Sonar Bobber",
+  "description.ffs.sonar_bobber": " Shows what fish is on the line before it's caught.",
+  "tag.item.fishing-for-stars.fishing_junk": "Fishing junk",
+  "tag.item.fishing-for-stars.fishing_treasure": "Fishing treasure"
 }

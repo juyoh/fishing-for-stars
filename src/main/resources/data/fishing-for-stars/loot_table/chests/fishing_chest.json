@@ -159,6 +159,27 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 3.0,
+      "entries": [
+          {
+            "type": "minecraft:empty",
+            "weight": 10
+          },
+      {
+          "type": "minecraft:item",
+          "functions": [
+              {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+              }
+          ],
+            "name": "fishing-for-stars:sonar_bobber"
+          }
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "fishing-for-stars:chests/fishing_chest"

@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FishingBobberEntity.class)
 public class FishingNotifyMixin {
 	@Shadow
-	private int fishTravelCountdown;
-
-	@Shadow
 	private int hookCountdown;
 
 	@Shadow
@@ -39,7 +36,7 @@ public class FishingNotifyMixin {
 
 		((ServerWorld) entity.getWorld()).spawnParticles(ModParticles.FISH_NOTIFIER_PARTICLE,
 				entity.getX(),
-				entity.getY() + 0.5,
+				entity.getY() + 0.7,
 				entity.getZ(), 1, 0, 0.2, 0, 0.2);
 		ci.cancel();
 	}

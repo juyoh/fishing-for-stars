@@ -10,6 +10,9 @@ public class ModPackets {
         PayloadTypeRegistry.playC2S().register(CaughtFishC2SPayload.ID, CaughtFishC2SPayload.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(CaughtFishC2SPayload.ID, CaughtFishC2SPayload::apply);
 
+        PayloadTypeRegistry.playC2S().register(LostFishC2SPayload.ID, LostFishC2SPayload.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(LostFishC2SPayload.ID, LostFishC2SPayload::apply);
+
         FishingForStars.LOGGER.info("Registering Client to Server packets for ffs");
     }
 

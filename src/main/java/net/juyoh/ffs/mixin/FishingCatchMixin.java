@@ -23,6 +23,9 @@ import net.minecraft.network.packet.s2c.custom.DebugBrainCustomPayload;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -62,12 +65,28 @@ public abstract class FishingCatchMixin {
 		LootTable lootTable = entity.getWorld().getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_GAMEPLAY);
 		List<ItemStack> list = lootTable.generateLoot(lootContextParameterSet);
 
-		boolean hasRadar = getPlayerOwner().getOffHandStack().getItem() instanceof SwordItem;
+		boolean hasRadar = getPlayerOwner().getOffHandStack().getItem() == FishingForStars.SONAR_BOBBER;
 
 		FishingForStars.promisedFish.put(entity.getPlayerOwner().getUuid(), list.getFirst());
 
+		boolean hasChest = entity.getRandom().nextFloat() < 0.5;
+
+		int fishSpeed = 1;
+		int fishLaziness = 1;
+
+		if (list.getFirst().isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(FishingForStars.MOD_ID, "fishing_junk")))) {
+			fishSpeed = 1;
+			fishLaziness = 3;
+		} else if (list.getFirst().isIn(ItemTags.FISHES)) {
+			fishSpeed = 2;
+			fishLaziness = 1;
+		} else if (list.getFirst().isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(FishingForStars.MOD_ID, "fishing_treasure")))) {
+			fishSpeed = 3;
+			fishLaziness = 1;
+		}
+
 		ServerPlayNetworking.send((ServerPlayerEntity) entity.getPlayerOwner(),
-				new OpenFishingScreenS2CPayload(hasRadar ? Registries.ITEM.getId(list.getFirst().getItem()) : Identifier.ofVanilla("air")));
+				new OpenFishingScreenS2CPayload(hasRadar ? Registries.ITEM.getId(list.getFirst().getItem()) : Identifier.ofVanilla("air"), hasChest, fishSpeed, fishLaziness));
 
 		Criteria.FISHING_ROD_HOOKED.trigger((ServerPlayerEntity)getPlayerOwner(), usedItem, entity, list);
 		if (hasRadar) {
