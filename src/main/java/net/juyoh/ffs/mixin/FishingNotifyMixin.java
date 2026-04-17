@@ -5,8 +5,6 @@ import net.juyoh.ffs.sound.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.projectile.FishingBobberEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +14,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingBobberEntity.class)
 public class FishingNotifyMixin {

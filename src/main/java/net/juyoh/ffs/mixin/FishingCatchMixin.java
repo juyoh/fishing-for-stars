@@ -1,45 +1,31 @@
 package net.juyoh.ffs.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.screenhandler.Networking;
 import net.juyoh.ffs.FishingForStars;
 import net.juyoh.ffs.network.OpenFishingScreenS2CPayload;
-import net.juyoh.ffs.sound.ModSounds;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.network.packet.s2c.custom.DebugBrainCustomPayload;
-import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -69,7 +55,7 @@ public abstract class FishingCatchMixin {
 
 		FishingForStars.promisedFish.put(entity.getPlayerOwner().getUuid(), list.getFirst());
 
-		boolean hasChest = entity.getRandom().nextFloat() < 0.5;
+		boolean hasChest = entity.getRandom().nextFloat() < 0.15;
 
 		int fishSpeed = 1;
 		int fishLaziness = 1;

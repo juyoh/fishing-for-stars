@@ -2,26 +2,9 @@ package net.juyoh.ffs.network;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.juyoh.ffs.FishingForStars;
-import net.juyoh.ffs.sound.ModSounds;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
 
 public record LostFishC2SPayload() implements CustomPayload {

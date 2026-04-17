@@ -4,7 +4,6 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
 public class FishNotifierParticle extends BillboardParticle {

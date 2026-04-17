@@ -1,9 +1,6 @@
 package net.juyoh.ffs;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.juyoh.ffs.network.ModPackets;
 import net.juyoh.ffs.particle.ModParticles;
@@ -12,7 +9,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -23,7 +19,10 @@ import net.minecraft.util.Rarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class FishingForStars implements ModInitializer {
 	public static final String MOD_ID = "fishing-for-stars";
@@ -60,4 +59,5 @@ public class FishingForStars implements ModInitializer {
 				.register((itemGroup) -> itemGroup.add(SONAR_BOBBER));
 
 	}
+
 }

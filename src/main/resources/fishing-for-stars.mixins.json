@@ -6,7 +6,8 @@
     "FishingCatchMixin",
     "FishingDisableBobMixin",
     "FishingNotifyMixin",
-    "FishingParticlesMixin"
+    "FishingParticlesMixin",
+    "InventoryInsertMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -15,6 +16,5 @@
     "requireAnnotations": true
   },
   "client": [
-
   ]
 }

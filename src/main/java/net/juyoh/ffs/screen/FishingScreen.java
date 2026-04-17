@@ -1,36 +1,23 @@
 package net.juyoh.ffs.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.juyoh.ffs.FishingForStars;
 import net.juyoh.ffs.network.CaughtFishC2SPayload;
 import net.juyoh.ffs.network.LostFishC2SPayload;
 import net.juyoh.ffs.sound.ModSounds;
 import net.juyoh.ffs.util.ColorUtils;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.FrogEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class FishingScreen extends Screen {
@@ -53,6 +40,7 @@ public class FishingScreen extends Screen {
     float paddleSpeed = 0;
 
     public int tick = 0;
+    float renderTick = 0;
     int exitTimer = 30;
     boolean playing = true;
 
@@ -91,7 +79,9 @@ public class FishingScreen extends Screen {
         //progress bar
         float progressF = catchProgress / 140;
         context.fill(baseX + 32, (int) (baseY + 143 - catchProgress), baseX + 32 + 4, baseY + 146, ColorUtils.lerp(0xFFFF7800, 0xFF00D400, progressF));
-        context.drawText(client.textRenderer, "catchprogressdivided: " + progressF, 0, 148, Colors.WHITE, true);
+        if (SharedConstants.isDevelopment) {
+            context.drawText(client.textRenderer, "catchprogressdivided: " + progressF, 0, 148, Colors.WHITE, true);
+        }
 
         //fishing bar / paddle
         //old solid color
@@ -124,25 +114,27 @@ public class FishingScreen extends Screen {
         }
 
         //debug
-        context.drawText(client.textRenderer, "paddleY: " + paddleY + " / " + maxPaddleY, 0, 0, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "fishY: " + fishY + " / " + maxPaddleY, 0, 32, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "catchProg: " + catchProgress + " / 140", 0, 64, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "isPlaying: " + playing, 0, 72, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "exitTimer: " + exitTimer + " / 30", 0, 104, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "tick: " + tick, 0, 136, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "item: " + stack.getItem().toString(), 0, 166, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "lmb: " + (isLeftClickDown() ? "down" : "not down"), 0, 172, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "delta: " + delta, 0, 192, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "paddle speed: " + paddleSpeed, 0, 208, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "paddle speed * delta: " + paddleSpeed * delta, 0, 224, Colors.WHITE, true);
+        if (SharedConstants.isDevelopment) {
+            context.drawText(client.textRenderer, "paddleY: " + paddleY + " / " + maxPaddleY, 0, 0, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "fishY: " + fishY + " / " + maxPaddleY, 0, 32, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "catchProg: " + catchProgress + " / 140", 0, 64, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "isPlaying: " + playing, 0, 72, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "exitTimer: " + exitTimer + " / 30", 0, 104, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "tick: " + tick, 0, 136, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "item: " + stack.getItem().toString(), 0, 166, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "lmb or space: " + (isLeftClickOrSpaceDown() ? "down" : "not down"), 0, 172, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "delta: " + delta, 0, 192, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "paddle speed: " + paddleSpeed, 0, 208, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "paddle speed * delta: " + paddleSpeed * delta, 0, 224, Colors.WHITE, true);
 
-        context.drawText(client.textRenderer, "smallenough: " + (Math.abs(paddleSpeed) < 1f ? "ye" : "no"), 0, 232, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "chestprogress: " + treasureProgress + " / 50", 0, 248, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "smallenough: " + (Math.abs(paddleSpeed) < 1f ? "ye" : "no"), 0, 232, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "chestprogress: " + treasureProgress + " / 50", 0, 248, Colors.WHITE, true);
 
-        context.drawText(client.textRenderer, "fishSpeed: " + fishMovementSpeed , 0, 258, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "fishLaziness: " + fishLaziness , 0, 268, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "fishSpeed: " + fishMovementSpeed , 0, 258, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "fishLaziness: " + fishLaziness , 0, 268, Colors.WHITE, true);
 
-        context.drawText(client.textRenderer, "lang: " + client.options.language , 0, 278, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "lang: " + client.options.language , 0, 278, Colors.WHITE, true);
+        }
 
         //gameplay
         if (playing) {
@@ -153,7 +145,8 @@ public class FishingScreen extends Screen {
             //fishSpeed *= 0.8F; //drag
             //paddleSpeed *= 0.8F;
 
-            if (isLeftClickDown()) {
+            //add vertical velocity when left mouse button or space is held down
+            if (isLeftClickOrSpaceDown()) {
                 paddleSpeed -= 0.2f;
             }
             if (paddleSpeed < -10f) {
@@ -194,6 +187,7 @@ public class FishingScreen extends Screen {
             if (fishY < 0) {
                 fishY = 0;
             }
+            renderTick += delta;
         }
 
         //radar
@@ -207,16 +201,20 @@ public class FishingScreen extends Screen {
         if (client.player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.FISH_CAUGHT)) <= 0) {
 
             context.drawTexture(tutorialId, baseX + 50, baseY + 44, 0, 0, 48, 69, 48, 69);
-            context.drawText(client.textRenderer, "hasn't caught fish" , 0, 288, Colors.WHITE, true);
+            if (SharedConstants.isDevelopment) {
+                context.drawText(client.textRenderer, "hasn't caught fish" , 0, 288, Colors.WHITE, true);
+            }
         }
-        context.drawText(client.textRenderer, "realLangPath: " + tutorialId, 0, 298, Colors.WHITE, true);
-        context.drawText(client.textRenderer, "fishCaught: " + client.player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.FISH_CAUGHT)), 0, 308, Colors.WHITE, true);
+        if (SharedConstants.isDevelopment) {
+            context.drawText(client.textRenderer, "realLangPath: " + tutorialId, 0, 298, Colors.WHITE, true);
+            context.drawText(client.textRenderer, "fishCaught: " + client.player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.FISH_CAUGHT)), 0, 308, Colors.WHITE, true);
+        }
 
         //spinning handle
         context.getMatrices().push();
         context.getMatrices().translate(baseX + 5, baseY + 129, 0);
-        context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(tick * 2));
-        context.drawTexture(BASE, 0, 0, 38, 88, 3, 8, 47, 150);
+        context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees((renderTick) * 16));
+        context.drawTexture(BASE, 0, 0, 39, 88, 3, 8, 47, 150);
         context.getMatrices().pop();
         //frog
         //InventoryScreen.drawEntity(context, baseX, baseY, baseX + 40, baseY + 40, 48, 0,  0, fishY * 6,  new FrogEntity(EntityType.FROG, client.world));
@@ -288,9 +286,9 @@ public class FishingScreen extends Screen {
         xpLevel = Math.min(Math.max(xpLevel, 0), 30) / 3;
         return Math.min(minSize + (xpLevel * 2), 44);
     }
-    boolean isLeftClickDown() {
+    boolean isLeftClickOrSpaceDown() {
         long window = MinecraftClient.getInstance().getWindow().getHandle();
-        return GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
+        return GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS || GLFW.glfwGetKey(window, GLFW.GLFW_KEY_SPACE) == GLFW.GLFW_PRESS;
     }
 
     @Override
