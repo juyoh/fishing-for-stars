@@ -3,15 +3,16 @@
 	"id": "fishing-for-stars",
 	"version": "${version}",
 	"name": "Fishing for Stars",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Faithful recreation of Stardew Valley's fishing minigame",
 	"authors": [
-		"Me!"
+		"Juyoh"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/juyoh/fishing-for-stars",
+		"sources": "https://github.com/juyoh/fishing-for-stars",
+		"issues": "https://github.com/juyoh/fishing-for-stars/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/fishing-for-stars/icon.png",
 	"environment": "*",
 	"entrypoints": {

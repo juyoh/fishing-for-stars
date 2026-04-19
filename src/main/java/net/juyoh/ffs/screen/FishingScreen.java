@@ -10,6 +10,9 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
@@ -18,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
 public class FishingScreen extends Screen {
@@ -216,8 +220,13 @@ public class FishingScreen extends Screen {
         context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees((renderTick) * 16));
         context.drawTexture(BASE, 0, 0, 39, 88, 3, 8, 47, 150);
         context.getMatrices().pop();
-        //frog
-        //InventoryScreen.drawEntity(context, baseX, baseY, baseX + 40, baseY + 40, 48, 0,  0, fishY * 6,  new FrogEntity(EntityType.FROG, client.world));
+        //player
+        ClientPlayerEntity  player = client.player;
+        player.setVelocity(Vec3d.ZERO);
+        player.setPose(EntityPose.STANDING);
+        player.setHeadYaw(0);
+        player.setPitch(0);
+        InventoryScreen.drawEntity(context, baseX - 100, baseY + 20, baseX, baseY + 150, 64, 0,  width / 2, height / 2, player);
     }
 
     @Override
@@ -245,16 +254,20 @@ public class FishingScreen extends Screen {
             }
             fishSpeed += (client.player.getRandom().nextFloat() * fishMovementSpeed) * (up ? -0.6f : 0.6f);
         }
-        if (catchProgress <= 0 && playing) {
-            //fish escapes
-            playing = false;
-            MinecraftClient.getInstance().player.playSound(ModSounds.FISH_ESCAPE);
-        }
-        if (catchProgress > 140 && playing) {
-            //caught fish
-            caughtFish = true;
-            playing = false;
-            client.player.playSound(ModSounds.FISH_FINISH_DING, 1f, 1f);
+        //development purposes
+        boolean canExit = true;
+        if (canExit) {
+            if (catchProgress <= 0 && playing) {
+                //fish escapes
+                playing = false;
+                MinecraftClient.getInstance().player.playSound(ModSounds.FISH_ESCAPE);
+            }
+            if (catchProgress > 140 && playing) {
+                //caught fish
+                caughtFish = true;
+                playing = false;
+                client.player.playSound(ModSounds.FISH_FINISH_DING, 1f, 1f);
+            }
         }
         if (isTreasureBehind() && treasureProgress < 50 && tick >= 40 && playing) {
             treasureProgress++;
