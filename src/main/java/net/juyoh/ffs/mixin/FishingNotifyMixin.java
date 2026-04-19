@@ -31,7 +31,7 @@ public class FishingNotifyMixin {
 		entity.getDataTracker().set(CAUGHT_FISH, true);
 		entity.playSound(ModSounds.FISH_NOTIFY,  1.0F, 1.0F);
 
-		((ServerWorld) entity.getWorld()).spawnParticles(ModParticles.FISH_NOTIFIER_PARTICLE,
+		((ServerWorld) entity.getEntityWorld()).spawnParticles(ModParticles.FISH_NOTIFIER_PARTICLE,
 				entity.getX(),
 				entity.getY() + 0.7,
 				entity.getZ(), 1, 0, 0.2, 0, 0.2);

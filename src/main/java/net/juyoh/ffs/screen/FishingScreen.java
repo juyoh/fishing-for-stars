@@ -8,6 +8,8 @@ import net.juyoh.ffs.sound.ModSounds;
 import net.juyoh.ffs.util.ColorUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -74,11 +76,11 @@ public class FishingScreen extends Screen {
 
 
         //speech bubble
-        context.drawTexture(SPEECH_BG, (width - 53) / 2, (height - 159) / 2, 0, 0, 53, 159, 53, 159);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, SPEECH_BG, (width - 53) / 2, (height - 159) / 2, 0, 0, 53, 159, 53, 159);
         //main rod
         int baseX = (width - 38) / 2;
         int baseY = (height - 150) / 2;
-        context.drawTexture(BASE, baseX, baseY, 0, 0, 38, 150, 47, 150);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BASE, baseX, baseY, 0, 0, 38, 150, 47, 150);
 
         //progress bar
         float progressF = catchProgress / 140;
@@ -95,26 +97,26 @@ public class FishingScreen extends Screen {
 
         int renderPaddleY = (int) Math.max(0, paddleY);
 
-        context.drawTexture(BASE, baseX + 17, (baseY + 3 + (renderPaddleY)), 38, 79, 9, 2, 47, 150);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BASE, baseX + 17, (baseY + 3 + (renderPaddleY)), 38, 79, 9, 2, 47, 150);
         for (int i = 0; i < paddleSize - 4; i++) {
             //fill
-            context.drawTexture(BASE, baseX + 17, (baseY + 5 + (renderPaddleY) + i), 38, 81, 9, 1, 47, 150);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED,BASE, baseX + 17, (baseY + 5 + (renderPaddleY) + i), 38, 81, 9, 1, 47, 150);
         }
         //end
-        context.drawTexture(BASE, baseX + 17, (baseY + (renderPaddleY) + paddleSize - 1), 38, 86, 9, 2, 47, 150);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BASE, baseX + 17, (baseY + (renderPaddleY) + paddleSize - 1), 38, 86, 9, 2, 47, 150);
 
         //fish 44px by 49px
-        context.drawTexture(ICONS, baseX + 17, (int) (baseY + 3 + (fishY)), 0, 1, 9, 9, 22, 24);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, ICONS, baseX + 17, (int) (baseY + 3 + (fishY)), 0, 1, 9, 9, 22, 24);
 
         //treasure chest
         if (hasChest && tick > 40 && treasureProgress < 50) {
-            context.drawTexture(ICONS, baseX + 17, (int) (baseY + 3 + (chestY)), 12F, 13F, 9, 11, (int) (22), (int) (24));
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, ICONS, baseX + 17, (int) (baseY + 3 + (chestY)), 12F, 13F, 9, 11, (int) (22), (int) (24));
             if (treasureProgress > 0) {
                 context.fill(baseX + 17, (int) (baseY + 3 + (chestY) + 8), (int) (baseX + 17 + ((treasureProgress / 50) * 9)), (int) (baseY + 3 + (chestY) + 10), Colors.WHITE);
             }
         } else if (hasChest && tick > 35 && treasureProgress < 50) {
             //chest appearing animation
-            context.drawTexture(ICONS, baseX + 17, (int) (baseY + 3 + (chestY)), 12F, 13F, 9, 11, 22, 24);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, ICONS, baseX + 17, (int) (baseY + 3 + (chestY)), 12F, 13F, 9, 11, 22, 24);
         }
 
         //debug
@@ -196,7 +198,7 @@ public class FishingScreen extends Screen {
 
         //radar
         if (stack.getItem() != Items.AIR) {
-            context.drawTexture(SONAR, baseX + 40 + 4, baseY + 7, 0, 0, 29, 24, 29, 24);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, SONAR, baseX + 40 + 4, baseY + 7, 0, 0, 29, 24, 29, 24);
             context.drawItem(stack, baseX + 40 + 4 + 9, baseY + 7 + 4);
         }
         //tutorial
@@ -204,7 +206,7 @@ public class FishingScreen extends Screen {
         Identifier tutorialId = Identifier.of(FishingForStars.MOD_ID, "textures/gui/tutorial/" + getLanguageName() + ".png");
         if (client.player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.FISH_CAUGHT)) <= 0) {
 
-            context.drawTexture(tutorialId, baseX + 50, baseY + 44, 0, 0, 48, 69, 48, 69);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, tutorialId, baseX + 50, baseY + 44, 0, 0, 48, 69, 48, 69);
             if (SharedConstants.isDevelopment) {
                 context.drawText(client.textRenderer, "hasn't caught fish" , 0, 288, Colors.WHITE, true);
             }
@@ -215,11 +217,11 @@ public class FishingScreen extends Screen {
         }
 
         //spinning handle
-        context.getMatrices().push();
-        context.getMatrices().translate(baseX + 5, baseY + 129, 0);
-        context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees((renderTick) * 16));
-        context.drawTexture(BASE, 0, 0, 39, 88, 3, 8, 47, 150);
-        context.getMatrices().pop();
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(baseX + 5, baseY + 129);
+        context.getMatrices().rotateAbout(renderTick / 2, 0, 0);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BASE, 0, 0, 39, 88, 3, 8, 47, 150);
+        context.getMatrices().popMatrix();
         //player
         ClientPlayerEntity  player = client.player;
         player.setVelocity(Vec3d.ZERO);
@@ -327,10 +329,11 @@ public class FishingScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         MinecraftClient.getInstance().player.playSound(ModSounds.ROD_BEND, 1f, 1f);
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
+
     public String getLanguageName() {
         //converts minecraft's current language name to stardew's possible translations
         String input = client.options.language;

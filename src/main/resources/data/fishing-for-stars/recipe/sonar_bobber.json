@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    },
-    "F": {
-      "tag": "minecraft:fishes"
-    }
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:redstone",
+    "F": "#minecraft:fishes"
   },
   "pattern": [
     " I ",

@@ -10,7 +10,7 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
-import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registries;
@@ -41,15 +41,16 @@ public abstract class FishingCatchMixin {
 	@Final
 	private int luckBonus;
 
-	@Inject(at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/loot/context/LootContextParameterSet$Builder;build(Lnet/minecraft/loot/context/LootContextType;)Lnet/minecraft/loot/context/LootContextParameterSet;"), method = "use", cancellable = true)
+	@Inject(at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/loot/context/LootWorldContext$Builder;build(Lnet/minecraft/util/context/ContextType;)Lnet/minecraft/loot/context/LootWorldContext;"), method = "use", cancellable = true)
 	private void use(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
 		cir.setReturnValue(1);
 		cir.cancel();
 		FishingBobberEntity entity = (FishingBobberEntity) (Object) this;
 
-		LootContextParameterSet lootContextParameterSet = (new LootContextParameterSet.Builder((ServerWorld)entity.getWorld())).add(LootContextParameters.ORIGIN, entity.getPos()).add(LootContextParameters.TOOL, usedItem).add(LootContextParameters.THIS_ENTITY, entity).luck((float)this.luckBonus + this.getPlayerOwner().getLuck()).build(LootContextTypes.FISHING);
-		LootTable lootTable = entity.getWorld().getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_GAMEPLAY);
-		List<ItemStack> list = lootTable.generateLoot(lootContextParameterSet);
+		LootWorldContext lootWorldContext = (new LootWorldContext.Builder((ServerWorld)entity.getEntityWorld())).add(LootContextParameters.ORIGIN, entity.getEntityPos()).add(LootContextParameters.TOOL, usedItem).add(LootContextParameters.THIS_ENTITY, entity).luck((float)this.luckBonus + entity.getPlayerOwner().getLuck()).build(LootContextTypes.FISHING);
+		LootTable lootTable = entity.getEntityWorld().getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_GAMEPLAY);
+		List<ItemStack> list = lootTable.generateLoot(lootWorldContext);
+		Criteria.FISHING_ROD_HOOKED.trigger((ServerPlayerEntity)entity.getPlayerOwner(), usedItem, entity, list);
 
 		boolean hasRadar = getPlayerOwner().getOffHandStack().getItem() == FishingForStars.SONAR_BOBBER;
 

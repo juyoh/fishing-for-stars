@@ -6,12 +6,17 @@ import net.juyoh.ffs.network.ModPackets;
 import net.juyoh.ffs.particle.ModParticles;
 import net.juyoh.ffs.sound.ModSounds;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -32,17 +37,11 @@ public class FishingForStars implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final Item SONAR_BOBBER = Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "sonar_bobber"), new Item(new Item.Settings().maxCount(1).maxDamage(32).rarity(Rarity.RARE)) {
-		@Override
-		public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-			tooltip.add(Text.translatable("item.modifiers.offhand").formatted(Formatting.GRAY));
-			tooltip.add(Text.translatable("description.ffs.sonar_bobber").formatted(Formatting.DARK_GRAY));
-			if (MinecraftClient.getInstance().options.advancedItemTooltips) {
-				//spacin
-				tooltip.add(Text.literal(""));
-			};
-			super.appendTooltip(stack, context, tooltip, type);
-		}
+	public static final Item SONAR_BOBBER = Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "sonar_bobber"), new Item(new Item.Settings().maxCount(1).maxDamage(32).rarity(Rarity.RARE)
+			.component(DataComponentTypes.LORE,
+					LoreComponent.DEFAULT.
+							with(Text.translatable("item.modifiers.offhand").formatted(Formatting.GRAY)).
+							with(Text.translatable("description.ffs.sonar_bobber").formatted(Formatting.DARK_GRAY))).registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "sonar_bobber")))) {
 	});
 
 	public static Map<UUID, ItemStack> promisedFish = new HashMap<>();
