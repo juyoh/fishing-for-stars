@@ -13,7 +13,7 @@ public class FishNotifierParticle extends BillboardParticle {
     float minV;
     float maxV;
     public FishNotifierParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, double velocityX, double velocityY, double velocityZ) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getSprite(0, 20));
+        super(world, x, y, z, velocityX, velocityY, velocityZ);
         this.maxAge = 20;
 
         this.red = 1f;
@@ -52,9 +52,10 @@ public class FishNotifierParticle extends BillboardParticle {
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_OPAQUE;
+    public ParticleTextureSheet getType() {
+        return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
     }
+
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {
         private final SpriteProvider spriteProvider;
@@ -64,7 +65,7 @@ public class FishNotifierParticle extends BillboardParticle {
         }
 
         @Override
-        public @org.jspecify.annotations.Nullable Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+        public @Nullable Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new FishNotifierParticle(world, x, y, z, this.spriteProvider, velocityX, velocityY, velocityZ);
         }
     }

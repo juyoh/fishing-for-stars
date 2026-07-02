@@ -47,8 +47,8 @@ public abstract class FishingCatchMixin {
 		cir.cancel();
 		FishingBobberEntity entity = (FishingBobberEntity) (Object) this;
 
-		LootWorldContext lootWorldContext = (new LootWorldContext.Builder((ServerWorld)entity.getEntityWorld())).add(LootContextParameters.ORIGIN, entity.getEntityPos()).add(LootContextParameters.TOOL, usedItem).add(LootContextParameters.THIS_ENTITY, entity).luck((float)this.luckBonus + entity.getPlayerOwner().getLuck()).build(LootContextTypes.FISHING);
-		LootTable lootTable = entity.getEntityWorld().getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_GAMEPLAY);
+		LootWorldContext lootWorldContext = (new LootWorldContext.Builder((ServerWorld)entity.getWorld())).add(LootContextParameters.ORIGIN, entity.getPos()).add(LootContextParameters.TOOL, usedItem).add(LootContextParameters.THIS_ENTITY, entity).luck((float)this.luckBonus + entity.getPlayerOwner().getLuck()).build(LootContextTypes.FISHING);
+		LootTable lootTable = entity.getWorld().getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_GAMEPLAY);
 		List<ItemStack> list = lootTable.generateLoot(lootWorldContext);
 		Criteria.FISHING_ROD_HOOKED.trigger((ServerPlayerEntity)entity.getPlayerOwner(), usedItem, entity, list);
 

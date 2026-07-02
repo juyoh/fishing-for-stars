@@ -47,14 +47,14 @@ public record CaughtFishC2SPayload(boolean caughtChest) implements CustomPayload
             //Fly fish towards player
 
             ItemStack itemStack = FishingForStars.promisedFish.get(playerEntity.getUuid());
-            ItemEntity itemEntity = new ItemEntity(bobber.getEntityWorld(), bobber.getX(), bobber.getY(), bobber.getZ(), itemStack);
+            ItemEntity itemEntity = new ItemEntity(bobber.getWorld(), bobber.getX(), bobber.getY(), bobber.getZ(), itemStack);
             double d = playerEntity.getX() - bobber.getX();
             double e = playerEntity.getY() - bobber.getY();
             double f = playerEntity.getZ() - bobber.getZ();
 
             itemEntity.setVelocity(d * 0.1, e * 0.1 + Math.sqrt(Math.sqrt(d * d + e * e + f * f)) * 0.08, f * 0.1);
-            bobber.getEntityWorld().spawnEntity(itemEntity);
-            playerEntity.getEntityWorld().spawnEntity(new ExperienceOrbEntity(playerEntity.getEntityWorld(), playerEntity.getX(), playerEntity.getY() + (double)0.5F, playerEntity.getZ() + (double)0.5F, bobber.getRandom().nextInt(6) + 1));
+            bobber.getWorld().spawnEntity(itemEntity);
+            playerEntity.getWorld().spawnEntity(new ExperienceOrbEntity(playerEntity.getWorld(), playerEntity.getX(), playerEntity.getY() + (double)0.5F, playerEntity.getZ() + (double)0.5F, bobber.getRandom().nextInt(6) + 1));
             if (itemStack.isIn(ItemTags.FISHES)) {
                 playerEntity.increaseStat(Stats.FISH_CAUGHT, 1);
             }
@@ -62,11 +62,11 @@ public record CaughtFishC2SPayload(boolean caughtChest) implements CustomPayload
             FishingForStars.promisedFish.remove(context.player().getUuid());
         }
         if (packet.caughtChest) {
-            playerEntity.getEntityWorld().playSound(playerEntity, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), ModSounds.TREASURE_OPEN, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            playerEntity.getWorld().playSound(playerEntity, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), ModSounds.TREASURE_OPEN, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
             SimpleInventory inventory = new SimpleInventory(27);
-            LootWorldContext lootContextParameterSet = (new LootWorldContext.Builder(playerEntity.getEntityWorld())).add(LootContextParameters.ORIGIN, bobber.getEntityPos()).luck(playerEntity.getLuck()).build(LootContextTypes.CHEST);
-            LootTable lootTable = playerEntity.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(FishingForStars.MOD_ID, "chests/fishing_chest")));
+            LootWorldContext lootContextParameterSet = (new LootWorldContext.Builder(playerEntity.getWorld())).add(LootContextParameters.ORIGIN, bobber.getPos()).luck(playerEntity.getLuck()).build(LootContextTypes.CHEST);
+            LootTable lootTable = playerEntity.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(FishingForStars.MOD_ID, "chests/fishing_chest")));
             lootTable.supplyInventory(inventory, lootContextParameterSet, bobber.getRandom().nextInt());
 
             playerEntity.openHandledScreen(new FishingChestHandlerFactory(inventory));

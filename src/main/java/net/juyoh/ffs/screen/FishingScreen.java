@@ -9,7 +9,6 @@ import net.juyoh.ffs.util.ColorUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -328,10 +327,11 @@ public class FishingScreen extends Screen {
         }
     }
 
+
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         MinecraftClient.getInstance().player.playSound(ModSounds.ROD_BEND, 1f, 1f);
-        return super.mouseClicked(click, doubled);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     public String getLanguageName() {
