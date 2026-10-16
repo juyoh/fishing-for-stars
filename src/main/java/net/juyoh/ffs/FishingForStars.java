@@ -2,7 +2,9 @@ package net.juyoh.ffs;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.juyoh.ffs.network.ModPackets;
+import net.juyoh.ffs.network.OpenFishingScreenS2CPayload;
 import net.juyoh.ffs.particle.ModParticles;
 import net.juyoh.ffs.sound.ModSounds;
 import net.minecraft.client.MinecraftClient;
@@ -52,6 +54,7 @@ public class FishingForStars implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		ModPackets.registerC2Spackets();
+		PayloadTypeRegistry.playS2C().register(OpenFishingScreenS2CPayload.ID, OpenFishingScreenS2CPayload.CODEC);
 		ModSounds.registerSounds();
 		ModParticles.registerParticles();
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)

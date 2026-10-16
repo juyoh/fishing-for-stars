@@ -6,7 +6,9 @@
     "FishingCatchMixin",
     "FishingDisableBobMixin",
     "FishingNotifyMixin",
-    "FishingParticlesMixin",
+    "FishingParticlesMixin"
+  ],
+  "client": [
     "InventoryInsertMixin"
   ],
   "injectors": {

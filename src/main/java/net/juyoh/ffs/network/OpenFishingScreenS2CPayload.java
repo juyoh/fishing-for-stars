@@ -1,5 +1,7 @@
 package net.juyoh.ffs.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.juyoh.ffs.FishingForStars;
 import net.juyoh.ffs.screen.FishingScreen;
@@ -26,7 +28,7 @@ public record OpenFishingScreenS2CPayload(Identifier item, boolean hasChest, int
         buf.writeInt(fishSpeed);
         buf.writeInt(fishLaziness);
     }
-
+    @Environment(EnvType.CLIENT)
     public static void apply(OpenFishingScreenS2CPayload packet, ClientPlayNetworking.Context context){
         ItemStack stack = new ItemStack(Registries.ITEM.get(packet.item));
 
